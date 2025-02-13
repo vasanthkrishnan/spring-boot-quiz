@@ -3,6 +3,7 @@ package com.vasanth.quizApp.service;
 import com.vasanth.quizApp.model.Question;
 import com.vasanth.quizApp.model.QuestionWrapper;
 import com.vasanth.quizApp.model.Quiz;
+import com.vasanth.quizApp.model.Response;
 import com.vasanth.quizApp.repository.QuestionRepo;
 import com.vasanth.quizApp.repository.QuizRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,20 @@ public class QuizService {
         }
 
         return new ResponseEntity<>(questionForUser, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> calculateScore(int id, List<Response> responses) {
+        Optional<Quiz> quiz = quizRepo.findById(id);
+        List<Question> questions = quiz.get().getQuestions();
+        int score = 0;
+        int i = 0;
+        for(Response response : responses) {
+            if(response.getRes().equals(questions.get(i).getAnswer())) {
+                score++;
+            }
+            i++;
+        }
+
+        return new ResponseEntity<>(score, HttpStatus.OK);
     }
 }

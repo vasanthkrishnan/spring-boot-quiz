@@ -1,7 +1,7 @@
 package com.vasanth.quizApp.Controller;
 
-import com.vasanth.quizApp.model.Question;
 import com.vasanth.quizApp.model.QuestionWrapper;
+import com.vasanth.quizApp.model.Response;
 import com.vasanth.quizApp.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +25,10 @@ public class QuizController {
     @GetMapping("/question/{id}")
     public ResponseEntity<List<QuestionWrapper>> getQuestionForUser(@PathVariable int id) {
         return quizService.getQuestionForUser(id);
+    }
+
+    @PostMapping("/submit/{id}")
+    public ResponseEntity<Integer> submitResponse(@PathVariable int id, @RequestBody List<Response> responses) {
+        return quizService.calculateScore(id, responses);
     }
 }
